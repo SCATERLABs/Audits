@@ -116,6 +116,7 @@ contract UpsideProtocol is Ownable {
     /// @dev This function may require a fee to be paid in "tokenizeFeeToken"
     function tokenize(string calldata _url, address _tokenizeFeeAddress) external returns (address metaCoinAddress) {
         if (urlToMetaCoinMap[_url] != address(0)) {
+            //ok this is fine
             revert MetaCoinExists();
         }
 
@@ -127,13 +128,14 @@ contract UpsideProtocol is Ownable {
             if (tokenizeFeeMap[_tokenizeFeeAddress] == 0) {
                 revert TokenizeFeeInvalid();
             }
+            //token transfer to the destination address through the UpsideProtocol contract
             IERC20Metadata(_tokenizeFeeAddress).safeTransferFrom(
                 msg.sender,
                 fee.tokenizeFeeDestinationAddress,
                 tokenizeFeeMap[_tokenizeFeeAddress]
             );
         }
-
+        //deploy the metaCoinAddress based on ERC20 token
         metaCoinAddress = address(
             new UpsideMetaCoin(
                 META_COIN_DEFAULT_NAME,
@@ -460,6 +462,7 @@ contract UpsideProtocol is Ownable {
 
 interface IUpsideStaking {
     function distributeRewards(address _linkTokenAddress, uint256 _rewardTokenAmount) external;
+
     function whitelistStakingToken(address _metaCoinAddress) external;
 }
 

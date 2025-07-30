@@ -1,0 +1,3 @@
+[submodule "lib/aera-v3"]
+	path = lib/aera-v3
+	url = https://github.com/Peter-Brad/aera-v3
